@@ -1,14 +1,9 @@
-import requests
+import requests, zipfile, io
 
-filename = "sample.txt"
-url = f"https://raw.githubusercontent.com/coro12343156/programming_practice/refs/heads/main/{filename}"
+url = "https://github.com/coro12343156/programming_practice/archive/refs/heads/main.zip"
 response = requests.get(url)
 
-if response.status_code == 200:
-    with open(filename, "wb") as f:
-        f.write(response.content)
-    print("✅ ダウンロード完了")
-else:
-    print(f"⚠️ エラー: {response.status_code}")
-    print(response.content)
+with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+    z.extractall("files")
+
 
